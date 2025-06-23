@@ -38,7 +38,6 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-
 spotless {
     kotlin {
         target("**/*.kt")

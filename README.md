@@ -1,9 +1,61 @@
-# 게시판 서비스 구현
+# 📝 게시판 API 프로젝트
 
-## ✨ 사용 기술
-* Java 21 
-* Spring Boot 3.5.0 
-* Gradle 8.15
+항해 플러스 백엔드 스프링 사전 스터디로 진행한 게시판 API 프로젝트입니다.   
+RESTful API 설계, Spring Boot 백엔드 개발, JPA를 사용한 객체 지향적인 개발을 연습합니다.
+
+---
+
+## 🚀 프로젝트 소개
+
+- **회원가입 및 로그인 기능**
+- **게시글 CRUD 기능**
+- **JWT 인증 기반 보안 적용**
+- **Spring Boot + JPA 기반 개발**
+
+---
+
+## 🛠️ 기술 스택
+
+| Category | Stack                          |
+| -------- |--------------------------------|
+| Language | Java 21                        |
+| Framework | Spring Boot 3.5.0              |
+| Build Tool | Gradle                         |
+| Database | PostgreSQL                     |
+| ORM | Spring Data JPA                |
+| Authentication | JWT                            |
+| Documentation | SpringDoc OpenAPI (Swagger UI) |
+| Test | JUnit5, Mockito                |
+
+---
+
+## 📂 프로젝트 구조
+```project-root
+src
+└── main
+├── java
+│ └── com.example.board
+│   ├── api # 컨트롤러 (API 엔드포인트)
+│   ├── application # 서비스 (비즈니스 로직)
+│   ├── domain # 도메인 (도메인 객체, 구현 로직)
+│   ├── db # 영속 (엔티티, 리포지토리)
+│   └── support # 공통 기능 (Exception, ApiResponse, Utils, Security 등)
+└── resources
+└── application.yaml
+```
+---
+
+## 📑 API 명세
+https://documenter.getpostman.com/view/25428915/2sB2x8Gruc
+
+---
+
+## 💾 DB ERD
+https://dbdiagram.io/e/685164f83cc77757c834e43f/685fedb6f413ba35084e479e
+
+---
+
+
 
 ### lint
 ```bash

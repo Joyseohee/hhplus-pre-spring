@@ -44,5 +44,5 @@ class UserEntity(
         password = encodePassword(newPassword)
     }
 
-    val articleAuthorName: String get() = username
+    val userName: String get() = username
 }

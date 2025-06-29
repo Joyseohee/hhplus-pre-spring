@@ -27,6 +27,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
 
     implementation("org.springframework.boot:spring-boot-starter-security")
+    compileOnly(group = "io.jsonwebtoken", name = "jjwt-api", version = "0.11.2")
+    runtimeOnly(group = "io.jsonwebtoken", name = "jjwt-impl", version = "0.11.2")
+    runtimeOnly(group = "io.jsonwebtoken", name = "jjwt-jackson", version = "0.11.2")
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     runtimeOnly("org.postgresql:postgresql")

@@ -1,7 +1,6 @@
 package com.hhplus.board.domain
 
 import com.hhplus.board.api.controller.reponse.ArticleGetResponseDto
-import com.hhplus.board.api.controller.reponse.ArticleListGetResponseDto
 import com.hhplus.board.db.ArticleEntity
 import java.time.Instant
 
@@ -13,7 +12,7 @@ data class ArticleGetListItemResult(
 ) {
     companion object {
         fun fromArticleEntity(article: ArticleEntity): ArticleGetListItemResult {
-            return ArticleGetListItemResult(article.getTitle(), article.getAuthor(), article.getContent(), article.createdAt)
+            return ArticleGetListItemResult(article.currentTitle, article.currentAuthor.userName, article.currentContent, article.createdAt)
         }
 
         fun fromArticleEntityList(articles: List<ArticleEntity>): List<ArticleGetListItemResult> {

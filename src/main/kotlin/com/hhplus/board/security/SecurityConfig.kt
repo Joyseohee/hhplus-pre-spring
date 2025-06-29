@@ -1,7 +1,5 @@
-package com.hhplus.board.support.config
+package com.hhplus.board.security
 
-import com.hhplus.board.support.filter.JwtAuthenticationFilter
-import com.hhplus.board.support.utils.JwtTokenProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -17,15 +15,20 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 class SecurityConfig(
     private val jwtTokenProvider: JwtTokenProvider,
 ) {
+    init {
+        println("✅ SecurityConfig loaded")
+    }
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
-        http.csrf().disable()
+        http
+            .csrf().disable()
             .httpBasic().disable()
+            .formLogin().disable()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeHttpRequests { auth ->
                 auth
-                    .requestMatchers("/api/login", "/api/signup").permitAll()
+                    .requestMatchers("/auth/signin", "/auth/signup").permitAll()
                     .anyRequest().authenticated()
             }
             .addFilterBefore(JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter::class.java)
@@ -35,5 +38,4 @@ class SecurityConfig(
 
     @Bean
     fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
-
 }

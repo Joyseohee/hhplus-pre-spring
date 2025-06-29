@@ -11,7 +11,7 @@ data class ArticlePostListItemResult(
 ) {
     companion object {
         fun fromArticles(article: ArticleEntity): ArticlePostListItemResult {
-            return ArticlePostListItemResult(article.getTitle(), article.getAuthor(), article.getContent(), article.createdAt)
+            return ArticlePostListItemResult(article.currentTitle, article.currentAuthor.userName, article.currentContent, article.createdAt)
         }
     }
 

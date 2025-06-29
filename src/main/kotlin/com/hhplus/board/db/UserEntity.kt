@@ -21,7 +21,7 @@ class UserEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
     @Column(name = "user_no", nullable = false)
-    val id: Long? = null
+    val id: Long = 0L
 
     companion object {
         fun create(username: String, password: String): UserEntity {

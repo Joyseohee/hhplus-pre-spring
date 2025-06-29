@@ -4,18 +4,14 @@ import com.hhplus.board.api.controller.reponse.ArticleGetResponseDto
 import com.hhplus.board.api.controller.reponse.ArticleListGetResponseDto
 import com.hhplus.board.api.controller.reponse.ArticlePostResponseDto
 import com.hhplus.board.api.controller.reponse.ArticlePutResponseDto
-import com.hhplus.board.api.controller.request.ArticleDeleteRequest
 import com.hhplus.board.api.controller.request.ArticlePostRequest
 import com.hhplus.board.api.controller.request.ArticlePutRequest
+import com.hhplus.board.domain.ArticleDelete
 import com.hhplus.board.domain.ArticleService
+import com.hhplus.board.security.CustomUserDetails
 import com.hhplus.board.support.error.ApiResponse
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.security.core.Authentication
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class ArticleController(
@@ -28,8 +24,9 @@ class ArticleController(
     }
 
     @PostMapping("/board/articles")
-    fun createArticles(@RequestBody request: ArticlePostRequest): ApiResponse<ArticlePostResponseDto> {
-        val result = articleService.createArticle(request.toArticlePost())
+    fun createArticles(@RequestBody request: ArticlePostRequest, authentication: Authentication): ApiResponse<ArticlePostResponseDto> {
+        val user = authentication.principal as CustomUserDetails
+        val result = articleService.createArticle(request.toArticlePost(user.userId))
         return ApiResponse.success(result.toArticlePostResponseDto())
     }
 
@@ -40,14 +37,16 @@ class ArticleController(
     }
 
     @PutMapping("/board/articles/{id}")
-    fun updateArticles(@RequestBody request: ArticlePutRequest, @PathVariable id: Long): ApiResponse<ArticlePutResponseDto> {
-        val result = articleService.updateArticle(request.toArticlePut(id))
+    fun updateArticles(@RequestBody request: ArticlePutRequest, @PathVariable id: Long, authentication: Authentication): ApiResponse<ArticlePutResponseDto> {
+        val user = authentication.principal as CustomUserDetails
+        val result = articleService.updateArticle(request.toArticlePut(id, user.userId))
         return ApiResponse.success(result.toArticlePutResponseDto())
     }
 
     @DeleteMapping("/board/articles/{id}")
-    fun deleteArticles(@RequestBody request: ArticleDeleteRequest, @PathVariable id: Long): ApiResponse<String> {
-        articleService.deleteArticle(request.toArticleDelete(id))
+    fun deleteArticles(@PathVariable id: Long, authentication: Authentication): ApiResponse<String> {
+        val user = authentication.principal as CustomUserDetails
+        articleService.deleteArticle(ArticleDelete(id, user.userId))
         return ApiResponse.success("Article deleted successfully")
     }
 }

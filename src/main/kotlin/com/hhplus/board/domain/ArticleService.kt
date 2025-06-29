@@ -6,7 +6,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class ArticleService(
-    val articleRepository: ArticleRepository
+    val articleRepository: ArticleRepository,
+    private val userService: UserService
 ) {
     fun getArticleList(): ArticleListGetResult {
         val articleEntities: List<ArticleEntity> = articleRepository.findAll()
@@ -14,14 +15,22 @@ class ArticleService(
     }
 
     fun createArticle(articlePost: ArticlePost): ArticlePostResult {
-        val articleEntity = ArticleEntity( articlePost.title, articlePost.author, articlePost.content, articlePost.password)
+        val articleAuthorId = articlePost.authorId
+            ?: throw IllegalArgumentException("작성자 정보가 없습니다.")
+
+        val articleAuthor = userService.findUserById(articleAuthorId)
+
+        val articleEntity = articlePost.toArticleEntity(articleAuthor)
         val savedArticleEntity = articleRepository.save(articleEntity)
         return ArticlePostResult.fromArticleEntity(savedArticleEntity)
     }
 
     fun updateArticle(articlePut: ArticlePut): ArticlePutResult {
         val article =  articleRepository.findById(articlePut.id).orElseThrow { NoSuchElementException("게시글 없음") }
-        val updatedArticle = article.update(articlePut.title, articlePut.author, articlePut.content, articlePut.password)
+
+        val articleAuthor = userService.findUserById(articlePut.authorId)
+
+        val updatedArticle = article.update(articlePut.title, articleAuthor, articlePut.content)
         return ArticlePutResult.fromArticleEntity(articleRepository.save(updatedArticle))
     }
 
@@ -32,7 +41,9 @@ class ArticleService(
 
     fun deleteArticle(articleDelete: ArticleDelete) {
         val article: ArticleEntity = articleRepository.findById(articleDelete.id).orElseThrow { NoSuchElementException("게시글 없음") }
-        article.verifyPassword(articleDelete.password)
+
+        userService.findUserById(articleDelete.authorId)
+
         articleRepository.delete(article)
     }
 }

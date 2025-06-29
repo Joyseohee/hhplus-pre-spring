@@ -16,9 +16,9 @@ data class ArticlePutResult(
     companion object {
         fun fromArticleEntity(entity: ArticleEntity) = ArticlePutResult(
             id = entity.id!!,
-            title = entity.getTitle(),
-            author = entity.getAuthor(),
-            content = entity.getContent()
+            title = entity.currentTitle,
+            author = entity.currentAuthor.userName,
+            content = entity.currentContent
         )
     }
 }

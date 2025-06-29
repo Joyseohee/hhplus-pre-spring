@@ -1,7 +1,8 @@
 package com.hhplus.board.domain
 
+import com.hhplus.board.db.UserEntity
 import com.hhplus.board.db.UserRepository
-import com.hhplus.board.support.utils.JwtTokenProvider
+import com.hhplus.board.security.JwtTokenProvider
 import org.springframework.stereotype.Service
 
 @Service
@@ -23,8 +24,12 @@ class UserService(
         userEntity.verifyPassword(toUserSignIn.password)
 
 
-        val token = jwtTokenProvider.createToken(userEntity.id!!, userEntity.userName)
+        val token = jwtTokenProvider.createToken(userEntity.id, userEntity.userName)
 
         return LoginResponse(token = token)
+    }
+
+    fun findUserById(id: Long): UserEntity = userRepository.findById(id).orElseThrow {
+        NoSuchElementException("User not found with id: $id")
     }
 }

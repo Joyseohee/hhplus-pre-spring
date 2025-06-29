@@ -1,4 +1,4 @@
-package com.hhplus.board.domain
+package com.hhplus.board.db
 
 import jakarta.persistence.Column
 import jakarta.persistence.MappedSuperclass
@@ -9,9 +9,10 @@ import java.time.Instant
 @MappedSuperclass
 abstract class BaseTimeEntity {
     @CreationTimestamp
-    @Column(updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     open val createdAt: Instant = Instant.now()
 
     @UpdateTimestamp
-    open val updatedAt: Instant? = null
+    @Column(name = "modified_at")
+    open val modifiedAt: Instant? = Instant.now()
 }
